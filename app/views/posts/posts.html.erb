@@ -1,0 +1,14 @@
+<h1>Blog post</h1>
+<%= render 'partial/messages' %>
+<% @posts.each do |post| %>
+  <div class="well">
+    <h3><%= post.title %></h3>
+    <p><%= truncate(post.body, length: 50) %></p>
+    <div class="article-meta-details">    
+      <small>Created by: <%= post.user.username if post.user%>,   
+      <%= time_ago_in_words(post.created_at) %> ago,   
+      last updated: <%= time_ago_in_words(post.updated_at) %> ago</small>  
+    </div>
+    <%= link_to "Read More", post_path(post), :class => 'btn btn-default' %>
+  </div>
+<% end %>
