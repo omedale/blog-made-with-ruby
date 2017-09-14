@@ -2,7 +2,6 @@
 <% @post.comments.each do |comment| %>
   <div class="well">
       <p><strong><%= comment.username %></strong>: <%= comment.body %>
-
       <%= link_to "[X]", [comment.post, comment],
       method: :delete,
       data: {confirm: 'Are you sure?'} %></p>

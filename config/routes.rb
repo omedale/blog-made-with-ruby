@@ -8,6 +8,10 @@ Rails.application.routes.draw do
 
   get 'about' => 'pages#about', as: 'about'
 
+  get 'login' => 'sessions#new', as: 'login'
+  post 'login' => 'sessions#create', as: 'login_user'
+  delete 'logout' => 'sessions#destroy', as: 'logout'
+
   resources :posts, except: [:posts] do 
     resources :comments
   end

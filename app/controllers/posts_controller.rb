@@ -1,7 +1,11 @@
 class PostsController < ApplicationController
     #http_basic_authenticate_with name: "omedale", password: "medale", except: [:index, :show]
+    before_action :set_post, only: [:edit, :update, :show, :destroy]
+    before_action :require_user, except: [:index, :show]
+    before_action :require_owner, only: [:edit, :update, :destroy]
     include PostsHelper
     def index
+        redirect_to posts_path if logged_in?
         @posts = Post.paginate(page: params[:page], per_page: 2 )
         #puts 'hello word'
         #puts '--------------'
@@ -13,11 +17,12 @@ class PostsController < ApplicationController
     end
 
     def posts
-        @posts = Post.all
+        @posts = Post.paginate(page: params[:page], per_page: 2 )
     end
 
     def show
-        @post = Post.find(params[:id])
+        puts "========777================="
+        puts @post.to_json
     end
 
     def new
@@ -37,25 +42,27 @@ class PostsController < ApplicationController
 
     def create
         #render plain: params[:post].inspect
-        @post = Post.new(post_params)
-        @post.user = User.first
-                
-        if(@post.save)
-            flash[:success] = "Post saved successfully"
-            redirect_to @post
+       if logged_in?
+            @post = Post.new(post_params)
+            @post.user = current_user
+                    
+            if(@post.save)
+                flash[:success] = "Post saved successfully"
+                redirect_to @post
+            else
+                render 'new'
+            end
         else
-            render 'new'
+            require_user
         end
     end
 
     def edit
-        @post = Post.find(params[:id])
+
     end
 
     def update
-        @post = Post.find(params[:id])
-        
-        if(@post.update(post_params))
+       if(@post.update(post_params))
             flash[:success] = "Post update  successfully"
             redirect_to @post
         else
@@ -64,7 +71,6 @@ class PostsController < ApplicationController
     end
 
     def destroy
-        @post = Post.find(params[:id])
         @post.destroy
         flash[:danger] = "Post deleted successfully"
         redirect_to posts_path
@@ -72,5 +78,17 @@ class PostsController < ApplicationController
 
     private def post_params
         params.require(:post).permit(:title, :body)
+    end
+
+    def set_post
+        @comment = Comment.new
+        @post = Post.find(params[:id])
+    end
+
+    def require_owner
+        if logged_in? && current_user != @post.user 
+            flash[:danger] = "You can only edit or delete your own articles"           
+            redirect_to home_path
+        end
     end
 end

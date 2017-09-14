@@ -1,9 +1,25 @@
 class CommentsController < ApplicationController
-    http_basic_authenticate_with name: "omedale", password: "medale", only: [:destroy]
+ 
     def create
         @post = Post.find(params[:post_id])
-        @comment = @post.comments.create(comment_params)
-        redirect_to post_path(@post)
+        if logged_in?
+            @comment = @post.comments.new(comment_params)
+            @comment.username = current_user.username
+            if @comment.save
+                redirect_to post_path(@post)
+            else
+                msg = "Oooops! ....Error!"  
+                redirect_to ("/posts/#{@post.id}"), flash: { danger: msg }
+            end
+        else
+            @comment = @post.comments.create(comment_params)
+            unless @comment.errors.full_messages[0]
+                redirect_to ("/posts/#{@post.id}")
+            else
+                msg = @comment.errors.full_messages[0]
+                redirect_to ("/posts/#{@post.id}"), flash: { danger: msg }
+            end
+        end
     end
 
     def destroy

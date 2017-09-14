@@ -3,10 +3,12 @@
 <h3>Add Comment<h3>
 
 <%= form_for([@post, @post.comments.build]) do |f| %>
+<% if !logged_in? %>
   <p>
-    <%= f.label :username %><br>
-    <%= f.text_field(:username, {:class => 'form-control'}) %>
+  <%= f.label :username %><br>
+  <%= f.text_field(:username, {:class => 'form-control'}) %>
   </p>
+<% end %>
 
   <p>
     <%= f.label :body %><br>

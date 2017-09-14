@@ -1,0 +1,19 @@
+<div class="regcontainer ">
+<h1 align="center">Login </h1>
+<%= render 'partial/messages' %>
+<%= form_for(:session, :html => {class: "form-horizontal", role: "form"}, url: login_path) do |f| %>
+  <div class="form-group">
+    <%= f.label :email %><br>
+    <%= f.text_field(:email, {:class => 'form-control', :placeholder => 'Enter Email', autofocus: true}) %>
+  </div>
+
+  <div class="form-group">
+  <%= f.label :password %><br>
+  <%= f.password_field(:password, {:class => 'form-control', :placeholder => 'Enter Password', autocomplete: "off "}) %>
+</div>
+
+  <div class="form-group">
+    <%= f.submit({:value=> 'Login', :class => 'btn btn-primary'}) %>
+  </div>
+<% end %>
+</div>

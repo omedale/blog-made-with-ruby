@@ -23,18 +23,7 @@
         <div id="navbar" class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
             <li><%= link_to "Home", home_path %></li>
-            <li class="dropdown">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
-            <ul class="dropdown-menu">
-              <li><a href="#">Action</a></li>
-              <li><a href="#">Another action</a></li>
-              <li><a href="#">Something else here</a></li>
-              <li role="separator" class="divider"></li>
-              <li><a href="#">Separated link</a></li>
-              <li role="separator" class="divider"></li>
-              <li><a href="#">One more separated link</a></li>
-            </ul>
-          </li>
+         
           </ul>
           <form class="navbar-form navbar-left">
           <div class="form-group">
@@ -43,8 +32,25 @@
           <button type="submit" class="btn btn-default">Submit</button>
         </form>
           <ul class="nav navbar-nav navbar-right">
+          <% if logged_in? %>
           <li><%= link_to "Create Post", new_post_path %></li>
-          <li><%= link_to "Register", new_post_path %></li>
+          <% end %>
+          <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Account <span class="caret"></span></a>
+          <ul class="dropdown-menu">
+          <% if logged_in? %>
+              <li><%= link_to "My Account", user_path(current_user) %></li>
+              <li role="separator" class="divider"></li>
+              <li><%= link_to "Update Account", edit_user_path(current_user) %></li>
+              <li role="separator" class="divider"></li>
+              <li><%= link_to "Log Out", logout_path, method: :delete %></li>
+          <% else %>
+              <li><%= link_to "Login", '/login' %></li>
+              <li role="separator" class="divider"></li>
+              <li><%= link_to "Register", register_path %></li>
+          <% end %>
+          </ul>
+        </li>
         </ul>
         </div>
       </div>
