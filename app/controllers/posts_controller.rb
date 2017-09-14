@@ -4,16 +4,12 @@ class PostsController < ApplicationController
     before_action :require_user, except: [:index, :show]
     before_action :require_owner, only: [:edit, :update, :destroy]
     include PostsHelper
+
     def index
         redirect_to posts_path if logged_in?
         @posts = Post.paginate(page: params[:page], per_page: 2 )
-        #puts 'hello word'
-        #puts '--------------'
         user_email = 'oluwafemi.medale@andela.com'
         puts andelan? user_email
-        #puts '------==--------'
-        #addit? 2, 3
-        #say_hi("thank u for helping")
     end
 
     def posts
@@ -21,7 +17,6 @@ class PostsController < ApplicationController
     end
 
     def show
-        puts "========777================="
         puts @post.to_json
     end
 
@@ -30,18 +25,14 @@ class PostsController < ApplicationController
     end
 
     def andelan?(email)
-        #checks if andela.com is available in the email sent to this function
         email["andela.com"] ? true : false
     end
 
     def addit?(a, b)
-        k = "yeo"
-        puts "#{a} ==== #{b}"
-        puts "#{a} ="+ k + "=== #{b}"
+
     end
 
     def create
-        #render plain: params[:post].inspect
        if logged_in?
             @post = Post.new(post_params)
             @post.user = current_user

@@ -1,5 +1,5 @@
 class CommentsController < ApplicationController
- 
+    before_action :require_owner, only: [:destroy]
     def create
         @post = Post.find(params[:post_id])
         if logged_in?
@@ -31,5 +31,13 @@ class CommentsController < ApplicationController
 
     private def comment_params
         params.require(:comment).permit(:username, :body)
+    end
+
+
+    def require_owner
+        if !logged_in?
+            flash[:danger] = "You can not delet this comment"           
+            redirect_to home_path
+        end
     end
 end
