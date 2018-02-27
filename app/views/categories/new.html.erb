@@ -1,0 +1,15 @@
+<div class="regcontainer ">
+  <h1 align="center">Login </h1>
+  <%= render 'partial/messages' %>
+  <%= form_for(:session, :html => {class: "form-horizontal", role: "form"}, url: categories_path) do |f| %>
+    <div class="form-group">
+      <%= f.label :category %><br>
+      <input name="name" class="form-control" type="text" placeholder="Please enter category" />
+    </div>
+
+
+    <div class="form-group">
+      <%= f.submit({:value=> 'Save', :class => 'btn btn-primary'}) %>
+    </div>
+  <% end %>
+</div>

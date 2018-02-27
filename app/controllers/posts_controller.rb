@@ -22,6 +22,7 @@ class PostsController < ApplicationController
 
     def new
         @post = Post.new
+        @categories = Category.all
     end
 
     def andelan?(email)
@@ -36,9 +37,11 @@ class PostsController < ApplicationController
        if logged_in?
             @post = Post.new(post_params)
             @post.user = current_user
+            category = Category.find(params[:category_id])
                     
             if(@post.save)
                 flash[:success] = "Post saved successfully"
+                category.posts << @post
                 redirect_to @post
             else
                 render 'new'

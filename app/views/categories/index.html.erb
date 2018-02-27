@@ -1,0 +1,12 @@
+<div class="regcontainer ">
+  <h1 align="center">categories </h1>
+<%= render 'partial/messages' %>
+
+  <div class="row">
+    <% @categories.each do |cat| %>
+      <div class="col-md-12"><h3><%=cat.name %></h3></div>
+    <% end %>
+
+  </div>
+
+</div>

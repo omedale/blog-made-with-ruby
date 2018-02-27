@@ -15,4 +15,6 @@ Rails.application.routes.draw do
   resources :posts, except: [:posts] do 
     resources :comments
   end
+
+  resources :categories, except: [:destroy]
 end
